@@ -13,12 +13,17 @@ public class Player : MonoBehaviour
     public PlayerController Input { get; private set; }
     public CharacterController Controller { get; private set; }
 
+    private PlayerStateMachine stateMachine;
+
     private void Awake()
     {
         AnimationData.Initialize();
-        Animator = GetComponent<Animator>();
+        Animator = GetComponentInChildren<Animator>();
         Input = GetComponent<PlayerController>();
         Controller = GetComponent<CharacterController>();
+
+        stateMachine = new PlayerStateMachine(this);
+        stateMachine.ChangeState(stateMachine.IdleState);
     }
 
     // Start is called before the first frame update
@@ -27,5 +32,14 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    private void Update()
+    {
+        stateMachine.HandleInput();
+        stateMachine.Update();
+    }
 
+    private void FixedUpdate()
+    {
+        stateMachine.PhysicsUpdate();
+    }
 }

@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInputs PlayerInputs {  get; private set; }
     public PlayerInputs.PlayerActions PlayerActions { get; private set; }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         PlayerInputs = new PlayerInputs();
         PlayerActions = PlayerInputs.Player;
